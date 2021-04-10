@@ -3,12 +3,14 @@ export default `
     input UserInput {
         email: String!
         password: String!
+        games: [GameInput]
     }
 
     type User {
         _id: String!
         email: String!
         password: String!
+        games: [Game]
     }
 
     type Query {

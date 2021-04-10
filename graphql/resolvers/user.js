@@ -13,10 +13,7 @@ export default {
     },
     Mutation: {
         createUser: async(root, args) => {
-            const newUser = new User({
-                email: args.email,
-                password: args.password,
-            })
+            const newUser = new User(args.data);
             await newUser.save();
             return newUser;
         },

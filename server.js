@@ -1,10 +1,9 @@
 import express from "express";
 import {ApolloServer} from "apollo-server-express";
 import dotenv from "dotenv";
-import userTypes from "./graphql/types/user.js";
-import userResolver from "./graphql/resolvers/user.js";
-import mongoose from "mongoose";
+import schema from "./graphql/graphql-schema.js";
 
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -23,8 +22,7 @@ mongoose.connect(db, {
 
 async function startApolloServer() {
   const server = new ApolloServer({
-    typeDefs: [userTypes],
-    resolvers: [userResolver],
+    schema
   });
   await server.start();
 
