@@ -1,22 +1,39 @@
+import User from "../../models/User.js";
+
 export default {
     Query: {
-        user: (root, args) => {
-            return {
-                _id: "82123jkasdh",
-                email: "test@abv.bg",
-                password: "123456",
-            }
+        user: async (root, {_id}) => {
+            const user = await User.findById(_id);
+            return user;
         },
-        users: () => {
-            return [{
-                _id: "82123jkasdh",
-                email: "test@abv.bg",
-                password: "123456",
-            },{
-                _id: "82123jkasdsdh",
-                email: "tes2t@abv.bg",
-                password: "12323231456",
-            }]
+        users: async () => {
+            const users = await User.find({});
+            return users;
         }
+    },
+    Mutation: {
+        createUser: async(root, args) => {
+            const newUser = new User({
+                email: args.email,
+                password: args.password,
+            })
+            await newUser.save();
+            return newUser;
+        },
+        editUser: async(root, {_id, data}) => {
+            const user = await User.findByIdAndUpdate(_id, 
+                {$set: data}, 
+                {
+                    runValidators: true,
+                    new: true,
+                })
+            return user;
+        },
+        deleteUser: async(root, {_id}) => {
+            const user = User.findOneAndDelete(_id);
+            return user;
+        },
     }
+
+
 }

@@ -3,8 +3,23 @@ import {ApolloServer} from "apollo-server-express";
 import dotenv from "dotenv";
 import userTypes from "./graphql/types/user.js";
 import userResolver from "./graphql/resolvers/user.js";
+import mongoose from "mongoose";
+
 
 dotenv.config();
+
+const db = process.env.MONGODB_URL;
+
+mongoose.connect(db, {
+    useNewUrlParser: true,
+    autoIndex: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}).then(()=> {
+    console.log('connected to mongodb')
+}).catch((e)=> {
+    console.log(e);
+})
 
 async function startApolloServer() {
   const server = new ApolloServer({
@@ -21,4 +36,4 @@ async function startApolloServer() {
   return { server, app };
 }
 
-startApolloServer()
+startApolloServer();
