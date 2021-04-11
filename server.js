@@ -3,6 +3,7 @@ import {ApolloServer} from "apollo-server-express";
 import dotenv from "dotenv";
 import schema from "./graphql/graphql-schema.js";
 import { getContext } from "./helpers/context.js";
+import { formatError } from "./helpers/format-error.js";
 
 import mongoose from "mongoose";
 
@@ -29,6 +30,7 @@ async function startApolloServer() {
       const context = await getContext(req, token);
       return context;
     },
+    formatError,
   });
   await server.start();
 

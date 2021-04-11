@@ -1,7 +1,9 @@
 import User from "../../models/User.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 import dotenv from "dotenv";
+import { UserInputError } from "apollo-server";
 dotenv.config();
 
 export default {
@@ -21,6 +23,22 @@ export default {
     Mutation: {
         createUser: async(root, args) => {
             const userData = args.data;
+            if(!validator.isEmail(userData.email)){
+                throw new UserInputError(`Email is not valid: ${userData.email}`, {
+                    field: "email",
+                    value: userData.email,
+                    constraint: "isEmail",
+                })
+            } 
+
+            if(!validator.isLength(userData.password, {min: 6, max: 255})){
+                throw new UserInputError(`Password has to be between 6 and 255 symbols`, {
+                    field: "password",
+                    value: userData.password,
+                    constraint: "isLength",
+                })
+            } 
+
             userData.password = await bcryptjs.hash(userData.password, 10);   
             const newUser = new User(userData);
             await newUser.save();
@@ -42,12 +60,20 @@ export default {
         login: async(root, {email, password}) => {
             const matchedUser = await User.findOne({email});
             if(!matchedUser){
-               throw new Error(`cannot find user with email: ${email}`)
+                throw new UserInputError(`cannot find user with email: ${email}`, {
+                    field: "email",
+                    value: email,
+                    constraint: "emailDoesNotExist",
+                })
             }
 
             const validPassword = await bcryptjs.compare(password, matchedUser.password);
             if(!validPassword){
-                throw new Error(`password not valid for: ${email}`)
+                throw new UserInputError(`Password is incorrect`, {
+                    field: "password",
+                    value: "",
+                    constraint: "passwordIncorrect",
+                })
             }
 
             const privateKey = process.env.JSONWEBTOKEN_PRIVATE_KEY;
