@@ -2,6 +2,7 @@ import express from "express";
 import {ApolloServer} from "apollo-server-express";
 import dotenv from "dotenv";
 import schema from "./graphql/graphql-schema.js";
+import { getContext } from "./helpers/context.js";
 
 import mongoose from "mongoose";
 
@@ -22,7 +23,12 @@ mongoose.connect(db, {
 
 async function startApolloServer() {
   const server = new ApolloServer({
-    schema
+    schema,
+    context: async ({ req }) => {
+      const token = req.headers.authorization || '';
+      const context = await getContext(req, token);
+      return context;
+    },
   });
   await server.start();
 

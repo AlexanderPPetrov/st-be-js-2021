@@ -7,7 +7,7 @@ export default {
             return game;
         },
         games: async () => {
-            const games = await User.find({});
+            const games = await Game.find({});
             return games;
         }
     },

@@ -11,7 +11,20 @@ const UserSchema = new Schema ({
         min: 6, 
         max: 255 
     },
-    games: [],
+    games: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Game' 
+    }],
+    firstName: { 
+        type: String, 
+        min: 1, 
+        max: 255 
+    },
+    lastName: { 
+        type: String, 
+        min: 1, 
+        max: 255 
+    },
 })
 
 const User = mongoose.model("User", UserSchema);

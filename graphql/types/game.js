@@ -7,13 +7,6 @@ export default `
         rating: Float!
     }
 
-    input GameInput {
-        _id: String!
-        title: String!
-        description: String!
-        rating: Float!
-    }
-
     input CreateGameInput {
         title: String!
         description: String!
