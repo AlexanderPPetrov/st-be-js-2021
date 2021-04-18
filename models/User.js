@@ -25,6 +25,7 @@ const UserSchema = new Schema ({
         min: 1, 
         max: 255 
     },
+    roles: [],
 })
 
 const User = mongoose.model("User", UserSchema);

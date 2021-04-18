@@ -6,6 +6,7 @@ export default `
         games: [String]
         firstName: String!
         lastName: String!
+        roles: [String]
     }
 
     type User {
@@ -15,6 +16,7 @@ export default `
         firstName: String!
         lastName: String!
         games: [Game]
+        roles: [String]
     }
 
     type Query {
