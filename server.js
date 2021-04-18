@@ -40,7 +40,7 @@ async function startApolloServer() {
   const app = express();
   // enable cors
   const corsOptions = {
-    origin: '*',
+    origin: process.env.FRONTEND_URL ?? "*",
     credentials: true
   };
   app.use(cors(corsOptions));
