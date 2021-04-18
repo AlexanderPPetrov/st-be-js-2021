@@ -39,11 +39,10 @@ async function startApolloServer() {
 
   const app = express();
   // enable cors
-  const corsOptions = {
-    origin: process.env.FRONTEND_URL ?? "*",
-    credentials: true
-  };
-  app.use(cors(corsOptions));
+  // const corsOptions = {
+  //   origin: process.env.FRONTEND_URL ?? "*",
+  // };
+  // app.use(cors(corsOptions));
   server.applyMiddleware({ app });
   await new Promise(resolve => app.listen({ port: process.env.PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);

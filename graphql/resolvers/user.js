@@ -17,6 +17,7 @@ export default {
             return users;
         },
         currentUser: async (root, args, context) => {
+            console.log('--->', context.user)
             return context.user;
         },
     },
