@@ -1,16 +1,13 @@
 import User from "../models/User.js";
-import jwtDecode from "jwt-decode";
 import requestIp from "request-ip";
 import geoip from "geoip-lite";
 import MobileDetect from "mobile-detect";
 
-export const getContext = async (req, token) => {
-    if(!token){
+export const getContext = async (req) => {
+    if(!req.user){
         return {}
     }
-    const jwt = token.split(" ")[1];
-    const userData = jwtDecode(jwt);
-    const user = await User.findById(userData._id).lean();
+    const user = await User.findById(req.user._id).lean();
     delete user.password;
 
     const ip = requestIp.getClientIp(req); 
@@ -22,6 +19,5 @@ export const getContext = async (req, token) => {
         geo,
         md,
     };
-
     return context
 }
