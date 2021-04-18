@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import schema from "./graphql/graphql-schema.js";
 import { getContext } from "./helpers/context.js";
 import { formatError } from "./helpers/format-error.js";
+import cors from "cors";
 
 import mongoose from "mongoose";
 
@@ -37,7 +38,12 @@ async function startApolloServer() {
   await server.start();
 
   const app = express();
-
+  // enable cors
+  const corsOptions = {
+    origin: '*',
+    credentials: true
+  };
+  app.use(cors(corsOptions));
   server.applyMiddleware({ app });
   await new Promise(resolve => app.listen({ port: process.env.PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
